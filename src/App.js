@@ -1,24 +1,47 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import "./App.css";
+
+import Sidebar from "./Component/Sidebar";
+
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min";
+
+import Dashboard from "./Pages/Dashboard";
+import Table from "./Pages/Table";
+import NavigationBar from "./Component/NavigationBar";
+import { useState } from "react";
 
 function App() {
+  const [showSidebar, setSidebar] = useState(false);
+  const sidebarHandler = () => {
+    setSidebar(!showSidebar);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <div className="container-fluid py-4">
+        <BrowserRouter>
+          <div
+            className={
+              showSidebar
+                ? "sidebar-main ps showSidebar my-3"
+                : "sidebar-main ps"
+            }
+          >
+            <Sidebar />
+          </div>
+          <div className="main-content ps-2 pe-2">
+            <NavigationBar sidebarHandler={sidebarHandler} tag="Dashboard" />
+            <Routes>
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/pages/dashboard" element={<Dashboard />} />
+              <Route path="/pages/table" element={<Table />} />
+            </Routes>
+          </div>
+        </BrowserRouter>
+      </div>
+    </>
   );
 }
 
